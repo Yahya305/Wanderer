@@ -1,5 +1,5 @@
 "use server";
-import prisma from "@lib/db";
+import prisma from "@lib/utils/db";
 import { cache } from "react";
 
 export const createUser = async ({

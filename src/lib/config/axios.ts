@@ -19,6 +19,6 @@ export const heelo = (() => {
     return date;
     // return {
     //     getDate:()=>date,
-    //     date
+    //     date1
     // }
 })();

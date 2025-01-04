@@ -1,4 +1,4 @@
-import { fetchSessionData } from "@lib/sessionHandler";
+import { fetchSessionData } from "@lib/utils/sessionHandler";
 import { NextFetchEvent, NextRequest, NextResponse } from "next/server";
 
 export const authMiddleware = (next: any) => {

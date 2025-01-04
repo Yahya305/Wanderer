@@ -17,14 +17,38 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Label } from "@components/ui/label";
 import { Input } from "@components/ui/input";
 import { loginSchema } from "../../../api/authentication/login/dto";
+import { useServerAction } from "zsa-react";
+import { loginUserAction } from "../action";
+import { toast } from "@lib/hooks/use-toast";
+import { redirect } from "next/navigation";
 
 // Validation schema
-
 
 export function LoginForm({
     className,
     ...props
 }: React.ComponentPropsWithoutRef<"div">) {
+    const {
+        execute: loginUser,
+        isPending,
+        data,
+    } = useServerAction(loginUserAction, {
+        onSuccess() {
+            toast({
+                title: "Success!",
+                description: "Login Successful",
+            });
+            redirect("/dashboard");
+        },
+        onError(err) {
+            toast({
+                title: "Uh-oh!",
+                variant: "destructive",
+                description: err.err.message,
+            });
+        },
+    });
+
     const {
         register,
         handleSubmit,
@@ -40,14 +64,16 @@ export function LoginForm({
     const onSubmit = async (values: z.infer<typeof loginSchema>) => {
         try {
             console.log("Form Submitted: ", values);
+            console.log(await loginUser(values));
+            console.log("done");
             // Example: Replace with actual API call
-            const response = await fetch("/api/authentication/login", {
-                method: "POST",
-                body: JSON.stringify(values),
-                headers: { "Content-Type": "application/json" },
-            });
-            const data = await response.json();
-            console.log(data);
+            // const response = await fetch("/api/authentication/login", {
+            //     method: "POST",
+            //     body: JSON.stringify(values),
+            //     headers: { "Content-Type": "application/json" },
+            // });
+            // const data = await response.json();
+            // console.log(data);
         } catch (error) {
             console.error("Login failed:", error);
         }

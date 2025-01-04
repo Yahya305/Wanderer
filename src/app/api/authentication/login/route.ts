@@ -1,13 +1,13 @@
-import prisma from "@lib/db";
+import prisma from "@lib/utils/db";
 import { NextRequest, NextResponse } from "next/server";
 import { headers } from "next/headers";
-import { loginUser } from "@lib/services/userService";
-import { createSession } from "@lib/sessionHandler";
+import { loginUserUseCase } from "@lib/use-cases/user";
+import { createSession } from "@lib/utils/sessionHandler";
 
 export async function POST(req: NextRequest) {
     const user = await req.json();
     // console.log((await headers()).get("userId"));
-    const loggedInUser = await loginUser(user);
+    const loggedInUser = await loginUserUseCase(user);
     if (!loggedInUser) {
         return NextResponse.json(
             {},
